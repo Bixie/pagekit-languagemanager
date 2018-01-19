@@ -1,0 +1,20 @@
+{
+    "name": "bixie/languagemanager",
+    "module": "bixie/languagemanager",
+    "type": "pagekit-extension",
+    "version": "0.0.1",
+    "title": "Bixie Languagemanager",
+    "description": "Language manager for Pagekit",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Bixie",
+            "email": "info@bixie.org",
+            "homepage": "http://www.bixie.org"
+        }
+    ],
+    "extra": {
+        "icon": "icon.svg",
+        "scripts": "scripts.php"
+    }
+}
