@@ -47,9 +47,10 @@ class LocaleListener implements EventSubscriberInterface {
      * @param View $view
      */
     public function onViewInit ($event, $view) {
-
+        if (App::isAdmin()) {
+            return;
+        }
         $view->params->set('title', $this->languagemanager->getLocaleSiteConfig('title'));
-
     }
 
     /**
@@ -57,6 +58,9 @@ class LocaleListener implements EventSubscriberInterface {
      * @param MetaHelper $meta
      */
     public function onMeta ($event, $meta) {
+        if (App::isAdmin()) {
+            return;
+        }
         if ($title = $this->languagemanager->getLocaleSiteConfig('title')) {
             //can't change App::config('system/site'), so manipulate string afterwards
             $meta->add('title', str_replace(
@@ -71,11 +75,6 @@ class LocaleListener implements EventSubscriberInterface {
         $meta->add('og:image', $this->languagemanager->getLocaleSiteConfig('meta.image'));
         $meta->add('og:description', $this->languagemanager->getLocaleSiteConfig('meta.description'));
         $meta->add('description', $this->languagemanager->getLocaleSiteConfig('meta.description'));
-
-//        App::module('system/site')->config = array_merge(
-//            App::module('system/site')->config,
-//            $this->languagemanager->getLocaleSiteConfig()
-//        );
     }
 
     /**
