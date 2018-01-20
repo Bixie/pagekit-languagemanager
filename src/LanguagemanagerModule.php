@@ -85,12 +85,12 @@ class LanguagemanagerModule extends Module {
                 return new LocaleUrlProvider($this, $app['router'], $app['file'], $app['locator']);
             });
 
-            if (($locale = $request->getLocale()) !== $this->default_language
+            if (($language = $request->getLocale()) !== $this->default_language
                 && !$app['isAdmin']
                 && strpos($request->getPathInfo(), '/system/intl') === false
                 && !($request->isXmlHttpRequest() && strpos($request->getPathInfo(), '/_debugbar') === false)) {
 
-                $this->setTranslateEvents($app, $locale);
+                $this->setupTranslations($app, $language);
             }
         }, 90);
 
@@ -101,9 +101,22 @@ class LanguagemanagerModule extends Module {
      * @param $app
      * @param $language
      */
-    public function setTranslateEvents ($app, $language) {
-        //translate pages and widgets as they're loaded
-        foreach (['page', 'widget',] as $model) {
+    public function setupTranslations ($app, $language) {
+        //nodes are already inited and cached in sites/NodesListener (request, 110)
+        foreach (Node::findAll(true) as $node) {
+            $event = new TranslateEvent('translate.node', $language, [
+                'default_language' => $this->default_language,
+            ]);
+            $app->trigger($event, [$node,]);
+        }
+
+        //setup events to translate the models registered in translationtypes as they're loaded
+        /** @var TranslationType $type */
+        foreach ($app['translationtypes'] as $type) {
+            if ($type->name == 'core.node') {
+                continue;
+            }
+            $model = $type->getEventModel();
             $app->on("model.$model.init", function ($event, $item) use ($app, $language, $model) {
 
                 $event = new TranslateEvent("translate.$model", $language, [
@@ -113,14 +126,6 @@ class LanguagemanagerModule extends Module {
 
             }, -10);
         }
-        //nodes are already inited and cached in sites/NodesListener (request, 110)
-        foreach (Node::findAll(true) as $node) {
-            $event = new TranslateEvent('translate.node', $language, [
-                'default_language' => $this->default_language,
-            ]);
-            $app->trigger($event, [$node,]);
-        }
-        //todo blogposts
 
     }
 
