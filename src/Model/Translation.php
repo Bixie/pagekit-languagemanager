@@ -2,7 +2,10 @@
 
 namespace Bixie\Languagemanager\Model;
 
+use Bixie\Languagemanager\TranslateType\TranslateType;
+use Pagekit\Application\UrlProvider;
 use Pagekit\System\Model\DataModelTrait;
+use Pagekit\Application as App;
 
 /**
  * @Entity
@@ -54,6 +57,40 @@ class Translation implements \JsonSerializable
      * @var string
      */
     public $content = '';
+
+    /**
+     * @var TranslateType
+     */
+    protected $translationType;
+
+    /** @var array */
+    protected static $properties = [
+        'model_url' => 'getModelUrl',
+    ];
+
+    /**
+     * @return TranslateType
+     */
+    public function getTranslationType () {
+        if (!isset($this->translationType)) {
+            $this->translationType = App::get('translationtypes')->get($this->type);
+        }
+        return $this->translationType;
+    }
+
+    public function getModelUrl ($referenceType = UrlProvider::BASE_PATH) {
+        if ($link = $this->getTranslationType()->edit_link) {
+            return App::url($link, ['id' => $this->model_id], $referenceType);
+        }
+        return '';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function jsonSerialize () {
+        return $this->toArray([], ['translationType']);
+    }
 
 
 }

@@ -46,7 +46,9 @@ $view->script('translation-edit', 'bixie/languagemanager:app/bundle/languagemana
                     <div class="uk-form-row">
                         <label class="uk-form-label">{{ 'ID' | trans }}</label>
                         <div class="uk-form-controls uk-form-controls-text">
-                            <a v-if="item_link" :href="item_link" class="uk-margin-small-left" target="_blank">
+                            <a v-if="translation.model_url"
+                               :href="translation.model_url" class="uk-margin-small-left" target="_blank">
+                                <i class="uk-icon-external-link uk-margin-small-right"></i>
                                 {{ translation.model_id }}
                             </a>
                             <span v-else>{{ translation.model_id }}</span>

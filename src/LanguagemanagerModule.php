@@ -42,18 +42,23 @@ class LanguagemanagerModule extends Module {
         $this->current_language = $this->default_language;
 
         //init types
-        $app['translatetypes'] = new TranslateTypeCollection([
+        $app['translationtypes'] = new TranslateTypeCollection([
             'core.page' => [
                 'label' => 'Pagekit Page',
                 'model' => 'Pagekit\\Model\\Page',
+                'allow_manual' => false,
             ],
             'core.node' => [
                 'label' => 'Pagekit Node',
                 'model' => 'Pagekit\\Model\\Node',
+                'edit_link' => '@site/page/edit',
+                'allow_manual' => false,
             ],
             'core.widget' => [
                 'label' => 'Pagekit Widget',
                 'model' => 'Pagekit\\Model\\Widget',
+                'edit_link' => '@site/widget/edit',
+                'allow_manual' => false,
             ],
         ]);
 

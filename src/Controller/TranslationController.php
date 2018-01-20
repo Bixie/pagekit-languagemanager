@@ -29,7 +29,7 @@ class TranslationController
             ],
             '$data' => [
                 'languages' => App::module('bixie/languagemanager')->getActiveLanguages(),
-                'types' => App::get('translatetypes')->all(),
+                'types' => App::get('translationtypes')->all(),
                 'config' => [
                     'filter' => (object) $filter,
                     'page' => $page
@@ -61,7 +61,7 @@ class TranslationController
             ],
             '$data' => [
                 'languages' => App::module('bixie/languagemanager')->getActiveLanguages(),
-                'types' => App::get('translatetypes')->all(),
+                'types' => App::get('translationtypes')->all(),
                 'translation' => $translation
             ],
             'translation' => $translation

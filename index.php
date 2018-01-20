@@ -85,7 +85,7 @@ return [
             $view->script('widget-language', 'bixie/languagemanager:app/bundle/widget-language.js', 'widget-edit');
             $view->data('$languageManager', [
                 'languages' => $this->languages,
-                'types' => $app['translatetypes']->all(),
+                'types' => $app['translationtypes']->all(),
                 'default_language' => $this->default_language,
             ]);
         },
@@ -93,7 +93,7 @@ return [
             $view->script('node-language', 'bixie/languagemanager:app/bundle/node-language.js', 'site-edit');
             $view->data('$languageManager', [
                 'languages' => $this->languages,
-                'types' => $app['translatetypes']->all(),
+                'types' => $app['translationtypes']->all(),
                 'default_language' => $this->default_language,
             ]);
         },

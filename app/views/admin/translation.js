@@ -35,9 +35,6 @@ window.Translation = {
             return this.$options.components[`translation-${this.translation.type}`]  ?
                `translation-${this.translation.type}` : 'translation-core.default';
         },
-        item_link() {
-
-        },
     },
 
     methods: {

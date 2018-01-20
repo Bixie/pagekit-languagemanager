@@ -29,6 +29,11 @@ class TranslateType implements \JsonSerializable {
 	public $edit_link;
 
 	/**
+	 * @var bool
+	 */
+	public $allow_manual = true;
+
+	/**
 	 * Emailtype constructor.
 	 * @param string $name
 	 * @param array  $data
