@@ -84,9 +84,6 @@
 
         created() {
             this.model = this.types[this.type].model;
-            this.setup();
-            //add node translations
-            this.loadNodeTranslations();
             if (this.node.data.defaults && this.node.data.defaults.id) {
                 this.model_id = this.node.data.defaults.id;
             } else {
@@ -95,8 +92,10 @@
                     this.setNewNodeId(id);
                     this.setNewId(this.node.data.defaults.id);
                 });
-
             }
+            this.setup();
+            //add node translations
+            this.loadNodeTranslations();
         },
 
         ready() {
