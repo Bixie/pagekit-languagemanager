@@ -36,7 +36,17 @@ export default {
             this.load();
             this.$on('save', this.save);
         },
+        setNewId(id) {
+            this.model_id = id;
+            _.forIn(this.translations, (trans, lang) => {
+                this.translations[lang].model_id = id;
+            });
+            this.save();
+        },
         load() {
+            if (!this.model_id) {
+                return;
+            }
             this.Translation.query({filter: {model: this.model, model_id: this.model_id,}})
                 .then(res => {
                     res.data.translations.forEach(translation => {
@@ -47,6 +57,9 @@ export default {
                 }, res => this.$notify((res.data.message || res.data), 'danger'));
         },
         save() {
+            if (!this.model_id) {
+                return;
+            }
             let translations = Object.values(this.translations);
             if (this.node_translations) {
                 translations = translations.concat(Object.values(this.node_translations));

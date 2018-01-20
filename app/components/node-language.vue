@@ -70,6 +70,10 @@
             this.model = this.types[this.type].model;
             this.model_id = this.node.id;
             this.setup();
+            //set id for new items
+            if (!this.node.id) {
+                this.$watch('node.id', id => this.setNewId(id));
+            }
         },
 
     };

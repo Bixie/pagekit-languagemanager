@@ -84,10 +84,19 @@
 
         created() {
             this.model = this.types[this.type].model;
-            this.model_id = this.node.data.defaults.id;
             this.setup();
             //add node translations
             this.loadNodeTranslations();
+            if (this.node.data.defaults && this.node.data.defaults.id) {
+                this.model_id = this.node.data.defaults.id;
+            } else {
+                //set id for new items
+                this.$watch('node.id', id => {
+                    this.setNewNodeId(id);
+                    this.setNewId(this.node.data.defaults.id);
+                });
+
+            }
         },
 
         ready() {
@@ -130,14 +139,20 @@
                     }
                 });
                 this.node_translations = node_translations;
-                this.Translation.query({filter: {model: 'Pagekit\\Model\\Node', model_id: this.node.id,}})
-                    .then(res => {
-                        res.data.translations.forEach(translation => {
-                            if (translation.model === 'Pagekit\\Model\\Node') {
+                if (this.node.id) {
+                    this.Translation.query({filter: {model: 'Pagekit\\Model\\Node', model_id: this.node.id,}})
+                        .then(res => {
+                            res.data.translations.forEach(translation => {
                                 this.node_translations[translation.language] = translation;
-                            }
-                        });
-                    }, res => this.$notify((res.data.message || res.data), 'danger'));
+                            });
+                        }, res => this.$notify((res.data.message || res.data), 'danger'));
+                }
+            },
+            setNewNodeId(id) {
+                _.forIn(this.node_translations, (trans, lang) => {
+                    console.log(id);
+                    this.node_translations[lang].model_id = id;
+                });
             },
         },
 

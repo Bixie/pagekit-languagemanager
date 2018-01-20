@@ -67,6 +67,10 @@
                 show_content: this.widget.type === 'system/text',
             };
             this.setup();
+            //set id for new items
+            if (!this.widget.id) {
+                this.$watch('widget.id', id => this.setNewId(id));
+            }
         },
 
         watch: {

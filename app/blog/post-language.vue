@@ -72,6 +72,10 @@
                 },
             };
             this.setup();
+            //set id for new items
+            if (!this.post.id) {
+                this.$watch('post.id', id => this.setNewId(id));
+            }
         },
 
         watch: {
