@@ -2,7 +2,7 @@
 
 namespace Bixie\Languagemanager\Model;
 
-use Bixie\Languagemanager\TranslateType\TranslateType;
+use Bixie\Languagemanager\TranslationType\TranslationType;
 use Pagekit\Application\UrlProvider;
 use Pagekit\System\Model\DataModelTrait;
 use Pagekit\Application as App;
@@ -59,7 +59,7 @@ class Translation implements \JsonSerializable
     public $content = '';
 
     /**
-     * @var TranslateType
+     * @var TranslationType
      */
     protected $translationType;
 
@@ -69,7 +69,7 @@ class Translation implements \JsonSerializable
     ];
 
     /**
-     * @return TranslateType
+     * @return TranslationType
      */
     public function getTranslationType () {
         if (!isset($this->translationType)) {

@@ -1,12 +1,12 @@
 <?php
 
-namespace Bixie\Languagemanager\TranslateType;
+namespace Bixie\Languagemanager\TranslationType;
 
 use Pagekit\Application as App;
 use Pagekit\Util\Arr;
 
 
-class TranslateType implements \JsonSerializable {
+class TranslationType implements \JsonSerializable {
 
 	/**
 	 * @var string
@@ -22,6 +22,11 @@ class TranslateType implements \JsonSerializable {
 	 * @var string
 	 */
 	public $model;
+
+	/**
+	 * @var string
+	 */
+	public $event_model;
 
 	/**
 	 * @var string
@@ -50,6 +55,13 @@ class TranslateType implements \JsonSerializable {
 	 */
 	public function getName () {
 		return $this->name;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getEventModel () {
+		return $this->event_model ?: strtolower(basename($this->model));
 	}
 
 	/**

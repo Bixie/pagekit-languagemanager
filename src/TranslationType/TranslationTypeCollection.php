@@ -1,13 +1,13 @@
 <?php
 
 
-namespace Bixie\Languagemanager\TranslateType;
+namespace Bixie\Languagemanager\TranslationType;
 
 
-class TranslateTypeCollection implements \IteratorAggregate, \Countable {
+class TranslationTypeCollection implements \IteratorAggregate, \Countable {
 
 	/**
-	 * @var TranslateType[]
+	 * @var TranslationType[]
 	 */
 	protected $types;
 
@@ -17,14 +17,14 @@ class TranslateTypeCollection implements \IteratorAggregate, \Countable {
 	 */
 	public function __construct (array $types = []) {
 		foreach ($types as $name => $data) {
-			$this->add(new TranslateType($name, $data));
+			$this->add(new TranslationType($name, $data));
 		}
 	}
 
 	/**
 	 * Gets pricefactor from collection.
 	 * @param  string $name
-	 * @return TranslateType
+	 * @return TranslationType
 	 */
 	public function get ($name) {
 		return isset($this->types[$name]) ? $this->types[$name] : null;
@@ -36,20 +36,20 @@ class TranslateTypeCollection implements \IteratorAggregate, \Countable {
 	 */
 	public function register ($types) {
 		foreach ((array) $types as $name => $data) {
-			$this->add(new TranslateType($name, $data));
+			$this->add(new TranslationType($name, $data));
 		}
 	}
 
 	/**
 	 * Adds type to collection.
-	 * @param TranslateType $type
+	 * @param TranslationType $type
 	 */
-	public function add (TranslateType $type) {
+	public function add (TranslationType $type) {
 		$this->types[$type->getName()] = $type;
 	}
 
 	/**
-	 * @return TranslateType[]
+	 * @return TranslationType[]
 	 */
 	public function all () {
 		return $this->types;

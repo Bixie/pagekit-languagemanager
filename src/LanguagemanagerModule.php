@@ -9,7 +9,8 @@ use Bixie\Languagemanager\Event\PageListener;
 use Bixie\Languagemanager\Event\PostListener;
 use Bixie\Languagemanager\Event\TranslateEvent;
 use Bixie\Languagemanager\Event\WidgetListener;
-use Bixie\Languagemanager\TranslateType\TranslateTypeCollection;
+use Bixie\Languagemanager\TranslationType\TranslationType;
+use Bixie\Languagemanager\TranslationType\TranslationTypeCollection;
 use Pagekit\Application as App;
 use Pagekit\Module\Module;
 use Pagekit\Site\Model\Node;
@@ -42,7 +43,7 @@ class LanguagemanagerModule extends Module {
         $this->current_language = $this->default_language;
 
         //init types
-        $app['translationtypes'] = new TranslateTypeCollection([
+        $app['translationtypes'] = new TranslationTypeCollection([
             'core.page' => [
                 'label' => 'Pagekit Page',
                 'model' => 'Pagekit\\Model\\Page',
