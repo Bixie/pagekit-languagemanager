@@ -45,6 +45,7 @@ class LanguagemanagerController {
             ],
             '$data' => [
                 'flags' => $flags,
+                'site_locale_id' => App::config('system')->get('site.locale'),
                 'languages' => App::module('system/intl')->getAvailableLanguages(),
                 'config' => App::module('bixie/languagemanager')->config()
             ]
@@ -60,6 +61,8 @@ class LanguagemanagerController {
     public function configAction ($config = []) {
         App::config('bixie/languagemanager')->merge($config, true)->set('locales', $config['locales']);
 
+        //flush cache to generate new routes
+        App::cache()->flushAll();
         return ['message' => 'success'];
     }
 

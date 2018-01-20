@@ -18,7 +18,7 @@
         </div>
 
         <ul v-el:locales-nestable class="uk-nestable">
-            <locale-set v-for="locale in value" :value.sync="locale" :index="$index" :flags="flags"></locale-set>
+            <locale-set v-for="locale in value" :value.sync="locale" :flags="flags"></locale-set>
         </ul>
 
     </div>
@@ -27,7 +27,7 @@
 <script>
 
     const default_locale = () => ({
-        ordering: 0,
+        isNew: true,
         locale_id: '',
         language: '',
         region: '',
@@ -52,6 +52,7 @@
             'value': Array,
             'languages': Object,
             'flags': Array,
+            'site_locale_id': String,
         },
 
         components: {
@@ -66,7 +67,7 @@
         },
 
         created() {
-            this.new_locale = _.defaultsDeep({priority: (this.value.length + 1)}, default_locale());
+            this.new_locale = _.defaultsDeep({}, default_locale());
         },
 
         ready() {
@@ -77,10 +78,8 @@
             }).on('change.uk.nestable', (e, nestable, el, type) => {
                 if (type && type !== 'removed') {
                     const locales = [];
-                    let ordering = 1;
                     _.forEach(nestable.list(), option => {
-                        locales.push(_.merge(_.find(this.value, 'locale_id', `${option.locale_id}`), {ordering,}));
-                        ordering += 1;
+                        locales.push(_.find(this.value, 'locale_id', `${option.locale_id}`));
                     });
                     this.value = locales;
                     this.$emit('save');
@@ -93,14 +92,16 @@
                 if (!this.new_locale.locale_id) {
                     return;
                 }
+                if (this.new_locale.locale_id === this.site_locale_id) {
+                    this.$notify('Cannot add the deafult language as extra language');
+                    return;
+                }
                 const parts = this.new_locale.locale_id.split('_');
                 this.new_locale.language = parts[0].toLowerCase();
                 this.new_locale.region = (parts[1] || '').toLowerCase();
 
                 this.value.push(this.new_locale);
-                this.new_locale = _.defaultsDeep({
-                    ordering: (this.value.length + 1),
-                }, default_locale());
+                this.new_locale = _.defaultsDeep({}, default_locale());
                 this.$emit('save');
             },
             remove(index) {

@@ -12,7 +12,7 @@
                     <a @click="save" class="uk-icon-save" :title="$trans('Save')" data-uk-tooltip="delay:300"></a>
                 </div>
             </div>
-            <div v-if="index > 0" class="uk-margin uk-form-stacked">
+            <div class="uk-margin uk-form-stacked">
                 <div class="uk-form-row">
                     <label class="uk-form-label">{{ 'Site title' | trans }}</label>
 
@@ -77,7 +77,7 @@
 
         name: 'locale-set',
 
-        props: {'value': Object, 'index': Number, 'flags': Array},
+        props: {'value': Object, 'flags': Array},
 
         mixins: [FlagSource],
 
@@ -94,6 +94,13 @@
             flag_source() {
                 return this.value.flag ? this.$url(this.flag_path + '/' + this.value.flag) : '';
             },
+        },
+
+        created() {
+            if (this.value.isNew) {
+                this.edit = true;
+                delete this.value.isNew;
+            }
         },
 
         methods: {

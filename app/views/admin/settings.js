@@ -8,16 +8,35 @@ module.exports = {
     fields: require('../../settings/fields'),
 
     components: {
-       'locales-settings': require('../../components/locales-settings.vue')
+       'locales-settings': require('../../components/locales-settings.vue'),
+        'flag-select': require('../../components/flag-select.vue'),
     },
 
     data() {
         return _.merge({
             languages: {},
             flags: [],
-            config: {},
+            site_locale_id: '',
+            config: {
+                default_locale: {
+                    flag: '',
+                },
+                locales: [],
+            },
             form: {},
         }, window.$data);
+    },
+
+    computed: {
+        default_locale_label() {
+            return this.languages[this.site_locale_id] || '';
+        },
+    },
+
+    created() {
+        if (!_.isArray(this.config.locales)) {
+            this.config.locales = [];
+        }
     },
 
     ready() {

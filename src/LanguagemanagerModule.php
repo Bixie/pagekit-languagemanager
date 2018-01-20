@@ -32,12 +32,21 @@ class LanguagemanagerModule extends Module {
      * @return void
      */
     public function main (App $app) {
+
+        $site_locale_id = $app->config('system')->get('site.locale');
+
+        list($language, $region) = explode('_', strtolower($site_locale_id));
+
+        $this->default_language = $language;
+        $this->languages[$language] = [
+            'locale_id' => $site_locale_id,
+            'language' => $language,
+            'region' => $region,
+            'flag' => $this->config('default_locale.flag', ''),
+            'site' => [],
+        ];
         //set locales config
         foreach ($this->config['locales'] as $locale) {
-            //first language is default
-            if (!isset($this->default_language)) {
-                $this->default_language = $locale['language'];
-            }
             $this->languages[$locale['language']] = $locale;
         }
         $this->current_language = $this->default_language;

@@ -37,15 +37,10 @@ return [
     ],
 
     'config' => [
-        'locales' => [
-            [
-                'priority' =>  1,
-                'locale_id' => 'en_US',
-                'language' => 'en',
-                'region' => 'us',
-                'flag' => 'us.png',
-            ],
+        'default_locale' => [
+            'flag' => '',
         ],
+        'locales' => [],
     ],
 
     'menu' => [
