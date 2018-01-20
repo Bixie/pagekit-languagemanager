@@ -1,11 +1,9 @@
 
-const FLAG_PATH = '/packages/bixie/languagemanager/assets/flags';
-
 export default {
 
     computed: {
         language_tabs() {
-            return _.filter(this.languages, locale => locale.language !== this.default_language)
+            return _.filter(this.languages, locale => locale.language !== this.default_language);
         },
     },
 
@@ -18,6 +16,7 @@ export default {
                 if (locale.language !== this.default_language) {
                     translations[locale.language] = {
                         id: 0,
+                        type: this.type,
                         model_id: this.model_id,
                         model: this.model,
                         language: locale.language,
@@ -52,9 +51,6 @@ export default {
                 .then(() => {
                     this.$notify('Translations saved');
                 }, res => this.$notify((res.data.message || res.data), 'danger'));
-        },
-        flag_source(locale) {
-            return locale.flag ? this.$url(FLAG_PATH + '/' + locale.flag) : '';
         },
     },
 

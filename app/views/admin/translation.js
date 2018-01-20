@@ -1,9 +1,17 @@
+import FlagSource from '../../mixins/flag-source';
 
-module.exports = {
+window.Translation = {
 
     name: 'translation-edit',
 
     el: '#translation-edit',
+
+    mixins: [FlagSource],
+
+    components: {
+        'translation-core.default': require('../../components/translation-core.default.vue'),
+        'translation-core.node': require('../../components/translation-core.node.vue'),
+    },
 
     data() {
         return _.merge({
@@ -12,6 +20,8 @@ module.exports = {
                     content_markdown: true,
                 }
             },
+            types: {},
+            languages: {},
             form: {},
         }, window.$data);
     },
@@ -21,6 +31,13 @@ module.exports = {
     },
 
     computed: {
+        editComponent() {
+            return this.$options.components[`translation-${this.translation.type}`]  ?
+               `translation-${this.translation.type}` : 'translation-core.default';
+        },
+        item_link() {
+
+        },
     },
 
     methods: {
@@ -34,10 +51,9 @@ module.exports = {
                 this.$notify(this.$trans('Translation %title% saved.', {title: this.translation.title}));
 
             }, res => this.$notify((res.data.message || res.data), 'danger'));
-        }
-
+        },
     }
 
 };
 
-Vue.ready(module.exports);
+Vue.ready(window.Translation);

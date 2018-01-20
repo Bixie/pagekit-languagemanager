@@ -20,6 +20,12 @@ class Translation implements \JsonSerializable
     public $id = null;
 
     /**
+     * @Column (type="string")
+     * @var string
+     */
+    public $type = '';
+
+    /**
      * @Column (type="integer")
      * @var int
      */

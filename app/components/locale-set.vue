@@ -71,13 +71,15 @@
 </template>
 
 <script>
-    const FLAG_PATH = '/packages/bixie/languagemanager/assets/flags';
+    import FlagSource from '../mixins/flag-source';
 
     export default {
 
         name: 'locale-set',
 
         props: {'value': Object, 'index': Number, 'flags': Array},
+
+        mixins: [FlagSource],
 
         components: {
             'flag-select': require('./flag-select.vue'),
@@ -90,7 +92,7 @@
                 return this.$parent.languages[this.value.locale_id] || '';
             },
             flag_source() {
-                return this.value.flag ? this.$url(FLAG_PATH + '/' + this.value.flag) : '';
+                return this.value.flag ? this.$url(this.flag_path + '/' + this.value.flag) : '';
             },
         },
 

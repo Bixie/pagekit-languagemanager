@@ -8,6 +8,7 @@ return [
         if ($util->tableExists('@languagemanager_translation') === false) {
             $util->createTable('@languagemanager_translation', function ($table) {
                 $table->addColumn('id', 'integer', ['unsigned' => true, 'length' => 10, 'autoincrement' => true]);
+                $table->addColumn('type', 'string', ['length' => 128]);
                 $table->addColumn('model_id', 'integer', ['unsigned' => true, 'length' => 10]);
                 $table->addColumn('model', 'string', ['length' => 128]);
                 $table->addColumn('language', 'string', ['length' => 8]);

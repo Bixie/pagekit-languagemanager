@@ -30,6 +30,7 @@ trait TranslationModelTrait
 		/** @var Translation $translation */
         $translation = self::modelCreate(array_merge([
 			'data' => [
+			    'content_markdown' => false,
             ],
 		], $data));
 		return $translation;

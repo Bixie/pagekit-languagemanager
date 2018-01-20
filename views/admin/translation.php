@@ -22,67 +22,55 @@ $view->script('translation-edit', 'bixie/languagemanager:app/bundle/languagemana
 
 			</div>
 		</div>
-        <div class="uk-grid pk-grid-large pk-width-sidebar-large" data-uk-grid-margin>
-            <div class="pk-width-content">
 
-            <div class="uk-form-row uk-form-horizontal">
-                <label for="field_title" class="uk-form-label">{{ 'Title' | trans }}</label>
+        <div class="uk-panel uk-margin uk-panel-box uk-panel-box-primary">
 
-                <div class="uk-form-controls">
-                    <input id="field_title" class="uk-width-1-1 uk-form-large" type="text" name="title"
-                           v-model="translation.title" v-validate:required>
+            <div class="uk-grid uk-form-stacked" data-uk-grid-margin>
+                <div class="uk-width-medium-1-3">
+                    <div class="uk-form-row">
+                        <label class="uk-form-label">{{ 'Type' | trans }}</label>
+                        <div class="uk-form-controls uk-form-controls-text">
+                            {{ types[translation.type].label }}
+                        </div>
+                    </div>
                 </div>
-                        <p class="uk-form-help-block uk-text-danger" v-show="form.title.invalid">
-                        {{ 'Please enter a value' | trans }}</p>
+                <div class="uk-width-medium-1-3">
+                    <div class="uk-form-row">
+                        <label class="uk-form-label">{{ 'Model' | trans }}</label>
+                        <div class="uk-form-controls uk-form-controls-text">
+                            {{ translation.model }}
+                        </div>
+                    </div>
                 </div>
-            <div class="uk-form-row uk-form-stacked">
-                <label for="field_content" class="uk-form-label">{{ 'Content' | trans }}</label>
+                <div class="uk-width-medium-1-6">
+                    <div class="uk-form-row">
+                        <label class="uk-form-label">{{ 'ID' | trans }}</label>
+                        <div class="uk-form-controls uk-form-controls-text">
+                            <a v-if="item_link" :href="item_link" class="uk-margin-small-left" target="_blank">
+                                {{ translation.model_id }}
+                            </a>
+                            <span v-else>{{ translation.model_id }}</span>
 
-                <div class="uk-form-controls">
-                    <v-editor id="field_content" :value.sync="translation.content"
-                              :options="{markdown : translation.data.content_markdown}"></v-editor>
-                    <p>
-                        <label><input type="checkbox" v-model="translation.data.content_markdown"> {{ 'Enable Markdown' | trans }}</label>
-                    </p>
+                        </div>
+                    </div>
                 </div>
-            </div>
-
-            </div>
-            <div class="pk-width-sidebar">
-
-            <div class="uk-form-row uk-form-stacked">
-                <label for="field_model" class="uk-form-label">{{ 'Model' | trans }}</label>
-
-                <div class="uk-form-controls">
-                    <input id="field_model" class="uk-width-1-1 uk-form-blank" type="text" name="model"
-                           v-model="translation.model" readonly="readonly" v-validate:required>
-                </div>
-                        <p class="uk-form-help-block uk-text-danger" v-show="form.model.invalid">
-                        {{ 'Please enter a value' | trans }}</p>
-            </div>
-            <div class="uk-form-row uk-form-stacked">
-                <label for="field_model" class="uk-form-label">{{ 'ID' | trans }}</label>
-
-                <div class="uk-form-controls">
-                    <input id="field_model" class="uk-width-1-1 uk-form-blank" type="text" name="model"
-                           v-model="translation.model_id" readonly="readonly" v-validate:required>
-                </div>
-                        <p class="uk-form-help-block uk-text-danger" v-show="form.model.invalid">
-                        {{ 'Please enter a value' | trans }}</p>
-            </div>
-            <div class="uk-form-row uk-form-stacked">
-                <label for="field_language" class="uk-form-label">{{ 'Language' | trans }}</label>
-
-                <div class="uk-form-controls">
-                    <input id="field_language" class="uk-width-1-1 uk-form-blank" type="text" name="language"
-                           v-model="translation.language" readonly="readonly" v-validate:required>
-                </div>
-                        <p class="uk-form-help-block uk-text-danger" v-show="form.language.invalid">
-                        {{ 'Please enter a value' | trans }}</p>
+                <div class="uk-width-medium-1-6">
+                    <div class="uk-form-row">
+                        <label class="uk-form-label">{{ 'Language' | trans }}</label>
+                        <div class="uk-form-controls uk-form-controls-text">
+                            <img :src="getFlagSource(translation.language)" width="40px" alt=""/>
+                            {{ translation.language }}
+                        </div>
+                    </div>
                 </div>
             </div>
 
         </div>
+
+        <component :is="editComponent"
+                   :translation="translation"
+                   :languages="languages"
+                   :types="types"></component>
 	</form>
 
 </div>

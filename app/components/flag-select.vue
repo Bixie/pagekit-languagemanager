@@ -14,7 +14,7 @@
 
 <script>
 
-    const FLAG_PATH = '/packages/bixie/languagemanager/assets/flags';
+    import FlagSource from '../mixins/flag-source';
 
     export default {
 
@@ -25,9 +25,11 @@
             'flags': Array,
         },
 
+        mixins: [FlagSource],
+
         computed: {
             flag_source() {
-                return this.value ? this.$url(FLAG_PATH + '/' + this.value) : '';
+                return this.value ? this.$url(this.flag_path + '/' + this.value) : '';
             },
         },
 

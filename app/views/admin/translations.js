@@ -1,3 +1,4 @@
+import FlagSource from '../../mixins/flag-source';
 
 module.exports = {
 
@@ -5,18 +6,23 @@ module.exports = {
 
     el: '#languagemanager-translations',
 
+    mixins: [FlagSource],
+
     data() {
         return _.merge({
             translations: false,
             config: {
                 filter: this.$session.get('bixie.languagemanager.translations.admin.filter', {
                     search: '',
+                    type: '',
+                    language: '',
                     order: 'title asc',
                 }),
                 page: 0
             },
             pages: 0,
             count: 0,
+            types: {},
             languages: {},
             selected: [],
         }, window.$data);
@@ -30,9 +36,18 @@ module.exports = {
     computed: {
         languagesOptions: function () {
 
-            var options = [];
+            const options = [];
             _.forEach(this.languages, locale => {
                 options.push({value: locale.language, text: locale.language});
+            });
+            return [{label: this.$trans('Filter by'), options: options}];
+        },
+
+        typesOptions: function () {
+
+            const options = [];
+            _.forEach(this.types, type => {
+                options.push({value: type.name, text: type.label});
             });
             return [{label: this.$trans('Filter by'), options: options}];
         },
@@ -63,6 +78,10 @@ module.exports = {
                 this.load();
                 this.$notify('Translations removed.');
             });
+        },
+
+        getTypeLabel(type_name) {
+            return this.types[type_name] ? this.types[type_name].label : type_name;
         },
 
     },

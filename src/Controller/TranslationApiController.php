@@ -24,9 +24,10 @@ class TranslationApiController
     public function indexAction($filter = null, $page = 0)
     {
         $query = Translation::query();
-        $filter = array_merge(array_fill_keys(['order', 'model', 'model_id', 'language', 'limit', 'search'], ''), (array)$filter);
+        $filter = array_merge(array_fill_keys(['order', 'type', 'model', 'model_id', 'language', 'limit', 'search'], ''), (array)$filter);
         extract($filter, EXTR_SKIP);
 
+        if ($type) $query->where('type = :type', ['type' => $type]);
         if ($model) $query->where('model = :model', ['model' => $model]);
         if ($model_id) $query->where('model_id = :model_id', ['model_id' => $model_id]);
         if ($language) $query->where('language = :language', ['language' => $language]);
@@ -36,7 +37,7 @@ class TranslationApiController
                 $query->orWhere(['title LIKE :search', 'content LIKE :search'], ['search' => "%{$search}%"]);
             });
         }
-        if (!preg_match('/^(id|model_id|model|language|title|content)\s(asc|desc)$/i', $order, $order)) {
+        if (!preg_match('/^(id|type|model_id|model|language|title|content)\s(asc|desc)$/i', $order, $order)) {
             $order = [1 => 'title', 2 => 'asc'];
         }
 

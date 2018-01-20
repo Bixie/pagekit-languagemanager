@@ -9,6 +9,7 @@ use Bixie\Languagemanager\Event\PageListener;
 use Bixie\Languagemanager\Event\PostListener;
 use Bixie\Languagemanager\Event\TranslateEvent;
 use Bixie\Languagemanager\Event\WidgetListener;
+use Bixie\Languagemanager\TranslateType\TranslateTypeCollection;
 use Pagekit\Application as App;
 use Pagekit\Module\Module;
 use Pagekit\Site\Model\Node;
@@ -30,7 +31,7 @@ class LanguagemanagerModule extends Module {
      * @return void
      */
     public function main (App $app) {
-
+        //set locales config
         foreach ($this->config['locales'] as $locale) {
             //first language is default
             if (!isset($this->default_language)) {
@@ -39,6 +40,22 @@ class LanguagemanagerModule extends Module {
             $this->languages[$locale['language']] = $locale;
         }
         $this->current_language = $this->default_language;
+
+        //init types
+        $app['translatetypes'] = new TranslateTypeCollection([
+            'core.page' => [
+                'label' => 'Pagekit Page',
+                'model' => 'Pagekit\\Model\\Page',
+            ],
+            'core.node' => [
+                'label' => 'Pagekit Node',
+                'model' => 'Pagekit\\Model\\Node',
+            ],
+            'core.widget' => [
+                'label' => 'Pagekit Widget',
+                'model' => 'Pagekit\\Model\\Widget',
+            ],
+        ]);
 
         $app->on('boot', function () use ($app) {
 

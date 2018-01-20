@@ -8,7 +8,7 @@
 
                 <ul class="uk-nav uk-nav-side pk-nav-large" data-uk-tab="connect: '#tab-node-languages'">
                     <li v-for="locale in language_tabs">
-                        <a><img :src="flag_source(locale)" width="40px" class="uk-margin-small-right" alt=""/>{{ locale.language }}</a>
+                        <a><img :src="getFlagSource(locale.language)" width="40px" class="uk-margin-small-right" alt=""/>{{ locale.language }}</a>
                     </li>
                 </ul>
 
@@ -43,6 +43,7 @@
 
 <script>
     import TranslateMixin from '../mixins/translate-mixin';
+    import FlagSource from '../mixins/flag-source';
 
     const vm = {
 
@@ -53,17 +54,20 @@
 
         props: ['node', 'form',],
 
-        mixins: [TranslateMixin,],
+        mixins: [TranslateMixin, FlagSource,],
 
         data: () => _.merge({
             translations: {},
             languages: {},
+            types: {},
             default_language: '',
-            model: 'Pagekit\\Model\\Node',
+            model: '',
             model_id: 0,
+            type: 'core.node',
         }, window.$languageManager),
 
         created() {
+            this.model = this.types[this.type].model;
             this.model_id = this.node.id;
             this.setup();
         },
