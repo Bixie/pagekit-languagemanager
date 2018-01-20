@@ -24,6 +24,7 @@ export default {
                         title: '',
                         content: '',
                         data: {
+                            content_markdown: false,
                         },
                     };
                 }

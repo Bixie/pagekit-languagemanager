@@ -30,7 +30,7 @@
                             </div>
 
                             <div class="uk-form-row">
-                                <v-editor :value.sync="translations[locale.language].content" :options="{markdown : page.data.markdown}"></v-editor>
+                                <v-editor :value.sync="translations[locale.language].content" :options="{markdown : translations[locale.language].data.content_markdown}"></v-editor>
                             </div>
 
                         </div>
@@ -89,15 +89,23 @@
             this.loadNodeTranslations();
         },
 
+        ready() {
+            this.$watch('page.data.markdown', value => {
+                _.forIn(this.translations, (trans, lang) => {
+                    this.translations[lang].data.content_markdown = value;
+                });
+            });
+        },
+
         computed: {
             page() {
-                let page = null;
+                let page = {data: {markdown: false,}};
                 _.forEach(this.$root.$children, vm => {
-                    if (vm.page !== undefined) {
+                    if (vm.$options.section.label === 'Content') {
                         page = vm.page;
                     }
                 });
-                return page || {data: {}};
+                return page;
             },
         },
 

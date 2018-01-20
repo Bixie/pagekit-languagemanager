@@ -27,7 +27,7 @@
                     </div>
 
                     <div v-if="widget.type === 'system/text'" class="uk-form-row">
-                        <v-editor :value.sync="translations[locale.language].content" :options="{markdown : widget.data.markdown}"></v-editor>
+                        <v-editor :value.sync="translations[locale.language].content" :options="{markdown : translations[locale.language].data.content_markdown}"></v-editor>
                     </div>
 
                 </li>
@@ -64,6 +64,14 @@
         created() {
             this.model_id = this.widget.id;
             this.setup();
+        },
+
+        watch: {
+            'widget.data.markdown': function (value) {
+                _.forIn(this.translations, (trans, lang) => {
+                    this.translations[lang].data.content_markdown = value;
+                });
+            },
         },
 
     };
