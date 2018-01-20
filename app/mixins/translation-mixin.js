@@ -50,9 +50,7 @@ export default {
             this.Translation.query({filter: {model: this.model, model_id: this.model_id,}})
                 .then(res => {
                     res.data.translations.forEach(translation => {
-                        if (translation.model === this.model) {
-                            this.translations[translation.language] = translation;
-                        }
+                        this.translations[translation.language] = translation;
                     });
                 }, res => this.$notify((res.data.message || res.data), 'danger'));
         },
@@ -65,7 +63,13 @@ export default {
                 translations = translations.concat(Object.values(this.node_translations));
             }
             this.Translation.save({id: 'bulk'}, {translations,})
-                .then(() => {
+                .then((res) => {
+                    res.data.translations.forEach(translation => {
+                        if (translation.model === this.model) {
+                            this.translations[translation.language] = translation;
+                        }
+                    });
+                    this.$emit('translations.saved', res.data.translations);
                     this.$notify('Translations saved');
                 }, res => this.$notify((res.data.message || res.data), 'danger'));
         },

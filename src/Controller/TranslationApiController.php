@@ -83,11 +83,13 @@ class TranslationApiController
      */
     public function bulkSaveAction($translations = [])
     {
+        $saved = [];
         foreach ($translations as $data) {
-            $this->saveAction($data, isset($data['id']) ? intval($data['id']) : 0);
+            $ret = $this->saveAction($data, isset($data['id']) ? intval($data['id']) : 0);
+            $saved[] = $ret['translation'];
         }
 
-        return ['message' => 'success'];
+        return ['translations' => $saved];
     }
 
     /**

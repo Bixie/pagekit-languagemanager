@@ -82,6 +82,28 @@
             type: 'core.page',
         }, window.$languageManager),
 
+        computed: {
+            page() {
+                let page = {data: {markdown: false,}};
+                _.forEach(this.$root.$children, vm => {
+                    if (vm.$options.section.label === 'Content') {
+                        page = vm.page;
+                    }
+                });
+                return page;
+            },
+        },
+
+        events: {
+            'translations.saved': function (translations) {
+                translations.forEach(translation => {
+                    if (translation.model === 'Pagekit\\Model\\Node') {
+                        this.node_translations[translation.language] = translation;
+                    }
+                });
+            }
+        },
+
         created() {
             this.model = this.types[this.type].model;
             if (this.node.data.defaults && this.node.data.defaults.id) {
@@ -95,7 +117,7 @@
             }
             this.setup();
             //add node translations
-            this.loadNodeTranslations();
+            this.setupNodeTranslations();
         },
 
         ready() {
@@ -106,20 +128,8 @@
             });
         },
 
-        computed: {
-            page() {
-                let page = {data: {markdown: false,}};
-                _.forEach(this.$root.$children, vm => {
-                    if (vm.$options.section.label === 'Content') {
-                        page = vm.page;
-                    }
-                });
-                return page;
-            },
-        },
-
         methods: {
-            loadNodeTranslations() {
+            setupNodeTranslations() {
                 const node_translations = {};
                 _.forIn(this.languages, locale => {
                     if (locale.language !== this.default_language) {
