@@ -69,13 +69,42 @@ class LanguagemanagerModule extends Module {
                 new LocaleListener($this),
                 new ConfigureRouteListener($this, $app['routes']),
                 new PageListener(),
-                new PostListener(),
                 new NodeListener(),
                 new WidgetListener()
             );
+
+            if ($app->module('blog')) {
+                //register type with languagemanager
+                $app['translationtypes']->register([
+                    'pagekit.post' => [
+                        'label' => 'Pagekit Blog',
+                        'model' => 'Pagekit\\Model\\Post',
+                        'edit_link' => '@blog/post/edit',
+                        'allow_manual' => false,
+                    ],
+                ]);
+                //register section on post-edit page and add data
+                $app->on('view.blog/admin/post-edit', function ($event, $view) use ($app) {
+                    $view->script('post-language', 'bixie/languagemanager:app/bundle/post-language.js', 'post-edit');
+                    $view->data('$languageManager', [
+                        'languages' => $this->languages,
+                        'types' => $app['translationtypes']->all(),
+                        'default_language' => $this->default_language,
+                    ]);
+                });
+                //register form for translation edit
+                $app->on('view.scripts', function ($event, $scripts) {
+                    $scripts->register('post-translation', 'bixie/languagemanager:app/bundle/post-language.js', '~translation-edit');
+                });
+                //subscribe listener for actual translation
+                $app->subscribe(new PostListener());
+            }
         });
 
-        // prio lower than 95 of this/LocaleListener (must be under 150 of system/intl),
+        /**
+         * Overwrite url provider on translated pages and fire translation events
+         * prio lower than 95 of this/LocaleListener (must be under 150 of system/intl)
+         */
         $app->on('request', function ($event, $request) use ($app) {
             if (!$event->isMasterRequest()) {
                 return;

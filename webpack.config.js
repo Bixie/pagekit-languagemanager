@@ -8,9 +8,10 @@ module.exports = [
             "languagemanager-settings": "./app/views/admin/settings.js",
             /*widgets*/
             "widget-language-select": "./app/components/widget-language-select.vue",
-            /*tabs*/
+            /*translation tabs*/
             "widget-language": "./app/components/widget-language.vue",
             "node-language": "./app/components/node-language.vue",
+            "post-language": "./app/blog/post-language.vue",
         },
         output: {
             filename: "./app/bundle/[name].js"
