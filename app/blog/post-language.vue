@@ -86,6 +86,16 @@
             },
         },
 
+        methods: {
+            hasContentToSave(translation) {
+                return (translation.title !== '' ||
+                    translation.content !== '' ||
+                    translation.data.meta.title !== '' ||
+                    translation.data.meta.description !== '' ||
+                    translation.data.excerpt !== '');
+            },
+        },
+
     };
 
     if (window.Post) {

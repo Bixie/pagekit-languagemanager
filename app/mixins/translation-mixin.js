@@ -62,6 +62,10 @@ export default {
             if (this.node_translations) {
                 translations = translations.concat(Object.values(this.node_translations));
             }
+            translations = translations.filter(this.hasContentToSave);
+            if (translations.length === 0) {
+                return;
+            }
             this.Translation.save({id: 'bulk'}, {translations,})
                 .then((res) => {
                     res.data.translations.forEach(translation => {
@@ -72,6 +76,9 @@ export default {
                     this.$emit('translations.saved', res.data.translations);
                     this.$notify('Translations saved');
                 }, res => this.$notify((res.data.message || res.data), 'danger'));
+        },
+        hasContentToSave(translation) {
+            return (translation.title !== '' || translation.content !== '');
         },
     },
 
