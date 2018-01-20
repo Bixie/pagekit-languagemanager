@@ -22,16 +22,9 @@
 
                     <div class="uk-grid" data-uk-grid-margin>
                         <div class="uk-width-medium-3-4">
-
-                            <div class="uk-form-row">
-
-                                <input class="uk-width-1-1 uk-form-large" type="text" :placeholder="'Enter Title' | trans"
-                                       v-model="translations[locale.language].title">
-                            </div>
-
-                            <div class="uk-form-row">
-                                <v-editor :value.sync="translations[locale.language].content" :options="{markdown : translations[locale.language].data.content_markdown}"></v-editor>
-                            </div>
+                            <translation-default :translation="translations[locale.language]"
+                                                :languages="languages"
+                                                :types="types"></translation-default>
 
                         </div>
                         <div class="uk-width-medium-1-4">
@@ -73,6 +66,10 @@
         props: ['node', 'form',],
 
         mixins: [TranslationMixin, FlagSource,],
+
+        components: {
+            'translation-default': require('./translation-core.default.vue'),
+        },
 
         data: () => _.merge({
             translations: {},
@@ -120,6 +117,7 @@
                     if (locale.language !== this.default_language) {
                         node_translations[locale.language] = {
                             id: 0,
+                            type: 'core.node',
                             model_id: this.node.id,
                             model: 'Pagekit\\Model\\Node',
                             language: locale.language,

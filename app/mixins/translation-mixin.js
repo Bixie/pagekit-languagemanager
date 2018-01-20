@@ -1,6 +1,10 @@
 
 export default {
 
+    data: () => ({
+        default_translation_data: {},
+    }),
+
     computed: {
         language_tabs() {
             return _.filter(this.languages, locale => locale.language !== this.default_language);
@@ -22,9 +26,9 @@ export default {
                         language: locale.language,
                         title: '',
                         content: '',
-                        data: {
+                        data: _.merge({
                             content_markdown: false,
-                        },
+                        }, this.default_translation_data),
                     };
                 }
             });

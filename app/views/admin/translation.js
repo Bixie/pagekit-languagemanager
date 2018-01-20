@@ -10,6 +10,7 @@ window.Translation = {
 
     components: {
         'translation-core.default': require('../../components/translation-core.default.vue'),
+        'translation-core.widget': require('../../components/translation-core.widget.vue'),
         'translation-core.node': require('../../components/translation-core.node.vue'),
     },
 

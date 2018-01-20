@@ -19,17 +19,9 @@
 
             <ul id="tab-widget-languages" class="uk-switcher uk-margin uk-form-stacked">
                 <li v-for="locale in language_tabs">
-
-                    <div class="uk-form-row">
-
-                        <input class="uk-width-1-1 uk-form-large" type="text" :placeholder="'Enter Title' | trans"
-                               v-model="translations[locale.language].title">
-                    </div>
-
-                    <div v-if="widget.type === 'system/text'" class="uk-form-row">
-                        <v-editor :value.sync="translations[locale.language].content" :options="{markdown : translations[locale.language].data.content_markdown}"></v-editor>
-                    </div>
-
+                    <translation-widget :translation="translations[locale.language]"
+                                         :languages="languages"
+                                         :types="types"></translation-widget>
                 </li>
             </ul>
 
@@ -54,6 +46,10 @@
 
         mixins: [TranslationMixin, FlagSource,],
 
+        components: {
+            'translation-widget': require('./translation-core.widget.vue'),
+        },
+
         data: () => _.merge({
             translations: {},
             languages: {},
@@ -67,6 +63,9 @@
         created() {
             this.model = this.types[this.type].model;
             this.model_id = this.widget.id;
+            this.default_translation_data = {
+                show_content: this.widget.type === 'system/text',
+            };
             this.setup();
         },
 
