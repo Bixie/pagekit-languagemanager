@@ -60,7 +60,7 @@
 </template>
 
 <script>
-    import TranslateMixin from '../mixins/translate-mixin';
+    import TranslationMixin from '../mixins/translation-mixin';
     import FlagSource from '../mixins/flag-source';
 
     export default {
@@ -72,7 +72,7 @@
 
         props: ['node', 'form',],
 
-        mixins: [TranslateMixin, FlagSource,],
+        mixins: [TranslationMixin, FlagSource,],
 
         data: () => _.merge({
             translations: {},

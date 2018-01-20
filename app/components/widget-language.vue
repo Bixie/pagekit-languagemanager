@@ -40,7 +40,7 @@
 </template>
 
 <script>
-    import TranslateMixin from '../mixins/translate-mixin';
+    import TranslationMixin from '../mixins/translation-mixin';
     import FlagSource from '../mixins/flag-source';
 
     const vm = {
@@ -52,7 +52,7 @@
 
         props: ['widget', 'config', 'form',],
 
-        mixins: [TranslateMixin, FlagSource,],
+        mixins: [TranslationMixin, FlagSource,],
 
         data: () => _.merge({
             translations: {},
