@@ -20,16 +20,15 @@ class WidgetListener implements EventSubscriberInterface
             return;
         }
 
-        if (is_callable($type->get('translate'))) {
-            call_user_func($type->get('translate'), $widget, $event->getLanguage());
-        } else {
-            if ($translation = Translation::findModelTranslation('Pagekit\Model\Widget', $widget->id, $event->getLanguage())) {
+        if ($translation = Translation::findModelTranslation('Pagekit\Model\Widget', $widget->id, $event->getLanguage())) {
+            if (is_callable($type->get('translate'))) {
+                call_user_func($type->get('translate'), $widget, $translation, $event->getLanguage());
+            } else {
                 $widget->title = $translation->title ?: $widget->title;
                 if ($translation->content) {
                     $widget->set('content', $translation->content);
                 }
             }
-
         }
 
     }
