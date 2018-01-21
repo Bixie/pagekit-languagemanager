@@ -16,6 +16,7 @@ return [
                 $table->addColumn('content', 'text', ['notnull' => false]);
                 $table->addColumn('data', 'json_array');
                 $table->setPrimaryKey(['id']);
+                $table->addIndex(['model', 'model_id', 'language',], 'LANGUAGEMANAGER_MODEL_TRANSLATION');
             });
         }
     },
