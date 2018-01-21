@@ -36,7 +36,7 @@ class TranslationType implements \JsonSerializable {
 	/**
 	 * @var bool
 	 */
-	public $allow_manual = true;
+	public $allow_manual = false;
 
 	/**
 	 * Emailtype constructor.

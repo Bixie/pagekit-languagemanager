@@ -56,19 +56,16 @@ class LanguagemanagerModule extends Module {
             'core.page' => [
                 'label' => 'Pagekit Page',
                 'model' => 'Pagekit\\Model\\Page',
-                'allow_manual' => false,
             ],
             'core.node' => [
                 'label' => 'Pagekit Node',
                 'model' => 'Pagekit\\Model\\Node',
                 'edit_link' => '@site/page/edit',
-                'allow_manual' => false,
             ],
             'core.widget' => [
                 'label' => 'Pagekit Widget',
                 'model' => 'Pagekit\\Model\\Widget',
                 'edit_link' => '@site/widget/edit',
-                'allow_manual' => false,
             ],
         ]);
 
@@ -89,7 +86,6 @@ class LanguagemanagerModule extends Module {
                         'label' => 'Pagekit Blog',
                         'model' => 'Pagekit\\Model\\Post',
                         'edit_link' => '@blog/post/edit',
-                        'allow_manual' => false,
                     ],
                 ]);
                 //register section on post-edit page and add data
