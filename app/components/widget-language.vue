@@ -83,7 +83,7 @@
 
     };
 
-    window.Widgets.components['widget-language'] = vm;
+    window.Widgets.components['language'] = vm;
     export default vm;
 
 </script>
