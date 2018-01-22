@@ -28,7 +28,7 @@ export default {
                         content: '',
                         data: _.merge({
                             content_markdown: false,
-                        }, this.default_translation_data),
+                        }, JSON.parse(JSON.stringify(this.default_translation_data))), //prevent references
                     };
                 }
             });
