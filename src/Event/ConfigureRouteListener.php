@@ -66,8 +66,8 @@ class ConfigureRouteListener implements EventSubscriberInterface {
         });
 
         if ($aliases) {
-            $_routes = array_merge($_routes, array_map(function ($alias) use ($route) {
-                $alias->addDefaults($route->getDefaults());
+            $_routes = array_merge($_routes, array_map(function ($alias) use ($route, $params) {
+                $alias->setDefaults(array_merge($route->getDefaults(), $params, $alias->getDefaults()));
                 return $alias;
             }, $aliases));
         }
