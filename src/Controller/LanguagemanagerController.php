@@ -19,7 +19,7 @@ class LanguagemanagerController {
         $languagemanager = App::module('bixie/languagemanager');
         $langs_regex = $languagemanager->getRequirementsRegex();
         //trim host and language prefix from referrer url
-        $redirect = preg_replace('#(https?:)?//[^/]+(/('.$langs_regex.')/?)?#', '', App::url()->previous());
+        $redirect = preg_replace('#(https?:)?//[^/]+(/('.$langs_regex.')(/|$))?#', '', App::url()->previous());
         //add lang if not default
         if ($language != $languagemanager->default_language) {
             $redirect = '/' . $language . '/' . ltrim($redirect, '/');
