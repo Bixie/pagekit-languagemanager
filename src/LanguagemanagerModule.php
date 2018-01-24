@@ -114,15 +114,15 @@ class LanguagemanagerModule extends Module {
             if (!$event->isMasterRequest()) {
                 return;
             }
-            //overwrite UrlProvider to generate locale-specific urls
-            $app->extend('url', function ($url, $app) {
-                return new LocaleUrlProvider($this, $app['router'], $app['file'], $app['locator']);
-            });
-
             if (($language = $request->getLocale()) !== $this->default_language
                 && !$app['isAdmin']
                 && strpos($request->getPathInfo(), '/system/intl') === false
-                && !($request->isXmlHttpRequest() && strpos($request->getPathInfo(), '/_debugbar') === false)) {
+                && !($request->isXmlHttpRequest() && !$request->attributes->get('_translate'))) {
+
+                //overwrite UrlProvider to generate locale-specific urls
+                $app->extend('url', function ($url, $app) {
+                    return new LocaleUrlProvider($this, $app['router'], $app['file'], $app['locator']);
+                });
 
                 $this->setupTranslations($app, $language);
             }

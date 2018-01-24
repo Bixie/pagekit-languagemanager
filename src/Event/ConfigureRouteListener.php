@@ -46,7 +46,7 @@ class ConfigureRouteListener implements EventSubscriberInterface {
             //no extra languages defined
             return;
         }
-        if (preg_match('/^\/(admin|api|system)/', $route->getPath())) {
+        if (preg_match('/^\/(admin|api|system)/', $route->getPath()) && !$route->getDefault('_translate')) {
             return;
         }
         $name = $route->getName();

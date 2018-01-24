@@ -26,7 +26,7 @@ class LocaleListener implements EventSubscriberInterface {
     public function onRequest ($event, $request) {
         if (App::isAdmin() || !$event->isMasterRequest()
             || strpos($request->getPathInfo(), '/system/intl') === 0
-            || ($request->isXmlHttpRequest() && strpos($request->getPathInfo(), '/_debugbar') === false)) {
+            || ($request->isXmlHttpRequest() && !$request->attributes->get('_translate'))) {
             return;
         }
 
