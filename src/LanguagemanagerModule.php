@@ -204,6 +204,7 @@ class LanguagemanagerModule extends Module {
      * @param string $language
      */
     public function setLanguage ($language) {
+        App::session()->set('_locale', $language);
         $this->current_language = $language;
     }
 

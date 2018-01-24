@@ -6,7 +6,7 @@ use Pagekit\Application as App;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
- * Languagemanager Admin Controller
+ * Languagemanager Controller
  */
 class LanguagemanagerController {
 
@@ -17,10 +17,11 @@ class LanguagemanagerController {
      */
     public function setLanguageAction ($language) {
         $languagemanager = App::module('bixie/languagemanager');
-        $langs_regex = $languagemanager->getRequirementsRegex();
+        $languagemanager->setLanguage($language);
         //trim host and language prefix from referrer url
+        $langs_regex = $languagemanager->getRequirementsRegex();
         $redirect = preg_replace('#(https?:)?//[^/]+(/('.$langs_regex.')(/|$))?#', '', App::url()->previous());
-        //add lang if not default
+        //add lang to url if not default
         if ($language != $languagemanager->default_language) {
             $redirect = '/' . $language . '/' . ltrim($redirect, '/');
         }
