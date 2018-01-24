@@ -53,7 +53,7 @@ class LocaleUrlProvider extends UrlProvider {
      * @return false|string
      */
     public function getRoute ($name, $parameters = [], $referenceType = UrlGenerator::ABSOLUTE_PATH) {
-        if (!preg_match('/^@(admin|api|system)/', $name)
+        if (!preg_match('/^@((\w*\/)api|system)/', $name)
             && ($language = $this->languagemanager->getLanguage()) != $this->languagemanager->default_language) {
 
             if ($query = substr(strstr($name, '?'), 1)) {
