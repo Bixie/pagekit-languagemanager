@@ -75,23 +75,4 @@ return [
 
     'settings' => '@languagemanager/settings',
 
-    'events' => [
-        'view.system/widget/edit' => function ($event, $view) use ($app) {
-            $view->script('widget-language', 'bixie/languagemanager:app/bundle/widget-language.js', 'widget-edit');
-            $view->data('$languageManager', [
-                'languages' => $this->languages,
-                'types' => $app['translationtypes']->all(),
-                'default_language' => $this->default_language,
-            ]);
-        },
-        'view.system/site/admin/edit' => function ($event, $view) use ($app) {
-            $view->script('node-language', 'bixie/languagemanager:app/bundle/node-language.js', 'site-edit');
-            $view->data('$languageManager', [
-                'languages' => $this->languages,
-                'types' => $app['translationtypes']->all(),
-                'default_language' => $this->default_language,
-            ]);
-        },
-
-    ],
 ];

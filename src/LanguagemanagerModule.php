@@ -68,6 +68,26 @@ class LanguagemanagerModule extends Module {
                 'edit_link' => '@site/widget/edit',
             ],
         ]);
+        if (!$this->isActive()) {
+            return;
+        }
+
+        $app->on('view.system/widget/edit', function ($event, $view) use ($app) {
+            $view->script('widget-language', 'bixie/languagemanager:app/bundle/widget-language.js', 'widget-edit');
+            $view->data('$languageManager', [
+                'languages' => $this->languages,
+                'types' => $app['translationtypes']->all(),
+                'default_language' => $this->default_language,
+            ]);
+        });
+        $app->on('view.system/site/admin/edit', function ($event, $view) use ($app) {
+            $view->script('node-language', 'bixie/languagemanager:app/bundle/node-language.js', 'site-edit');
+            $view->data('$languageManager', [
+                'languages' => $this->languages,
+                'types' => $app['translationtypes']->all(),
+                'default_language' => $this->default_language,
+            ]);
+        });
 
         $app->on('boot', function () use ($app) {
 
@@ -215,6 +235,11 @@ class LanguagemanagerModule extends Module {
         return $this->languages;
     }
 
+    public function isActive () {
+        //no extra languages defined
+        return count($this->getActiveLanguages()) > 1;
+    }
+
     /**
      * @return string
      */
@@ -229,15 +254,6 @@ class LanguagemanagerModule extends Module {
         }
         return $this->requirements_regex;
     }
-
-    /**
-     * Whitelist of publicly accessable config keys
-     * @return array
-     */
-    public function publicConfig () {
-        return array_intersect_key(static::config(), array_flip([]));
-    }
-
 
 }
 

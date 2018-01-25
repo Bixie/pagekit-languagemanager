@@ -42,10 +42,6 @@ class ConfigureRouteListener implements EventSubscriberInterface {
      * @param RouteCollection $routes
      */
     public function onConfigureRoute ($event, $route, $routes) {
-        if (count($this->languagemanager->getActiveLanguages()) === 1) {
-            //no extra languages defined
-            return;
-        }
         if (preg_match('/^\/(admin|api|system)/', $route->getPath()) && !$route->getDefault('_translate')) {
             return;
         }
