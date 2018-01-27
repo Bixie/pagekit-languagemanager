@@ -72,15 +72,15 @@ class Translation implements \JsonSerializable
      * @return TranslationType
      */
     public function getTranslationType () {
-        if (!isset($this->translationType)) {
+        if ($this->type && !isset($this->translationType)) {
             $this->translationType = App::get('translationtypes')->get($this->type);
         }
         return $this->translationType;
     }
 
     public function getModelUrl ($referenceType = UrlProvider::BASE_PATH) {
-        if ($link = $this->getTranslationType()->edit_link) {
-            return App::url($link, ['id' => $this->model_id], $referenceType);
+        if ($type = $this->getTranslationType() and $type->edit_link) {
+            return App::url($type->edit_link, ['id' => $this->model_id], $referenceType);
         }
         return '';
     }
