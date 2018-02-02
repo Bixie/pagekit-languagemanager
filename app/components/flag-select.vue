@@ -14,24 +14,24 @@
 
 <script>
 
-    import FlagSource from '../mixins/flag-source';
+import FlagSource from '../mixins/flag-source';
 
-    export default {
+export default {
 
-        name: 'flag-select',
+    name: 'FlagSelect',
 
-        props: {
-            'value': {type: String, default: ''},
-            'flags': Array,
+    mixins: [FlagSource,],
+
+    props: {
+        'value': {type: String, default: '',},
+        'flags': Array,
+    },
+
+    computed: {
+        flag_source() {
+            return this.value ? this.$url(this.flag_path + '/' + this.value) : '';
         },
+    },
 
-        mixins: [FlagSource],
-
-        computed: {
-            flag_source() {
-                return this.value ? this.$url(this.flag_path + '/' + this.value) : '';
-            },
-        },
-
-    }
+}
 </script>

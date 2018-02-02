@@ -6,8 +6,8 @@
             <label for="field_title" class="uk-form-label">{{ 'Title' | trans }}</label>
 
             <div class="uk-form-controls">
-                <input id="field_title" class="uk-width-1-1 uk-form-large" type="text" name="title"
-                       v-model="translation.title">
+                <input id="field_title" class="uk-width-1-1 uk-form-large" type="text"
+                       name="title" v-model="translation.title">
             </div>
         </div>
         <div class="uk-form-row uk-form-stacked">
@@ -24,15 +24,15 @@
 </template>
 <script>
 
-    export default {
+export default {
 
-        name: 'TranslationCoreDefault',
+    name: 'TranslationCoreDefault',
 
-        props: {
-            translation: Object,
-            languages: Object,
-            types: Object,
-        },
-    }
+    props: {
+        translation: Object,
+        languages: Object,
+        types: Object,
+    },
+}
 
 </script>

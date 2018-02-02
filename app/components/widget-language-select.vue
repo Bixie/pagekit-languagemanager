@@ -6,7 +6,9 @@
             <div class="uk-form-row">
                 <label for="form-title" class="uk-form-label">{{ 'Title' | trans }}</label>
                 <div class="uk-form-controls">
-                    <input id="form-title" class="uk-form-width-large" type="text" name="title" v-model="widget.title" v-validate:required>
+                    <input id="form-title" class="uk-form-width-large" type="text"
+                           name="title" v-model="widget.title"
+                           v-validate:required>
                     <p class="uk-form-help-block uk-text-danger" v-show="form.title.invalid">{{ 'Title cannot be blank.' | trans }}</p>
                 </div>
             </div>
@@ -32,26 +34,31 @@
 </template>
 
 <script>
+/*global _*/
 
+// @vue/component
+const vm = {
 
-    module.exports = {
+    name: 'WidgetLanguageSelect',
 
-        section: {
-            label: 'Settings'
-        },
+    section: {
+        label: 'Settings',
+    },
 
-        replace: false,
+    replace: false,
 
-        props: ['widget', 'config', 'form'],
+    props: {'widget': Object, 'config': Object, 'form': Object,},
 
-        created: function () {
-            this.$options.partials = this.$parent.$options.partials;
-            this.$set('widget.data', _.merge({
-                view: 'dropdown',
-            }, this.widget.data));
-        }
-    };
+    created: function () {
+        this.$options.partials = this.$parent.$options.partials;
+        this.$set('widget.data', _.merge({
+            view: 'dropdown',
+        }, this.widget.data));
+    },
+};
 
-    window.Widgets.components['bixie-language-select:settings'] = module.exports;
+window.Widgets.components['bixie-language-select:settings'] = vm;
+//needs to be exported to compile template
+export default vm;
 
 </script>

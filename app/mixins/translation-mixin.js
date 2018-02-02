@@ -1,3 +1,4 @@
+/*global _ */
 
 export default {
 
@@ -47,7 +48,7 @@ export default {
             if (!this.model_id) {
                 return;
             }
-            this.Translation.query({filter: {model: this.model, model_id: this.model_id,}})
+            this.Translation.query({filter: {model: this.model, model_id: this.model_id,},})
                 .then(res => {
                     res.data.translations.forEach(translation => {
                         this.translations[translation.language] = translation;
@@ -66,7 +67,7 @@ export default {
             if (translations.length === 0) {
                 return;
             }
-            this.Translation.save({id: 'bulk'}, {translations,})
+            this.Translation.save({id: 'bulk',}, {translations,})
                 .then((res) => {
                     res.data.translations.forEach(translation => {
                         if (translation.model === this.model) {

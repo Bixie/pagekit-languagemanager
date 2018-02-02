@@ -71,44 +71,46 @@
 </template>
 
 <script>
-    import FlagSource from '../mixins/flag-source';
+import FlagSelect from './flag-select.vue';
 
-    export default {
+import FlagSource from '../mixins/flag-source';
 
-        name: 'locale-set',
+export default {
 
-        props: {'value': Object, 'flags': Array},
+    name: 'LocaleSet',
 
-        mixins: [FlagSource],
+    components: {
+        'flag-select': FlagSelect,
+    },
 
-        components: {
-            'flag-select': require('./flag-select.vue'),
+    mixins: [FlagSource,],
+
+    props: {'value': Object, 'flags': Array,},
+
+    data: () => ({edit: false, }),
+
+    computed: {
+        label() {
+            return this.$parent.languages[this.value.locale_id] || '';
         },
-
-        data: () => ({edit: false, }),
-
-        computed: {
-            label() {
-                return this.$parent.languages[this.value.locale_id] || '';
-            },
-            flag_source() {
-                return this.value.flag ? this.$url(this.flag_path + '/' + this.value.flag) : '';
-            },
+        flag_source() {
+            return this.value.flag ? this.$url(this.flag_path + '/' + this.value.flag) : '';
         },
+    },
 
-        created() {
-            if (this.value.isNew) {
-                this.edit = true;
-                delete this.value.isNew;
-            }
+    created() {
+        if (this.value.isNew) {
+            this.edit = true;
+            delete this.value.isNew;
+        }
+    },
+
+    methods: {
+        save() {
+            this.edit = false;
+            this.$parent.$emit('save');
         },
+    },
 
-        methods: {
-            save() {
-                this.edit = false;
-                this.$parent.$emit('save');
-            },
-        },
-
-    }
+}
 </script>

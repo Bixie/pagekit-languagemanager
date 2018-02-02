@@ -1,12 +1,14 @@
+/*global _, Vue */
 import FlagSource from '../../mixins/flag-source';
 
-module.exports = {
-
-    name: 'translations',
+// @vue/component
+const vm = {
 
     el: '#languagemanager-translations',
 
-    mixins: [FlagSource],
+    name: 'Translations',
+
+    mixins: [FlagSource,],
 
     data() {
         return _.merge({
@@ -18,7 +20,7 @@ module.exports = {
                     language: '',
                     order: 'title asc',
                 }),
-                page: 0
+                page: 0,
             },
             pages: 0,
             count: 0,
@@ -28,30 +30,38 @@ module.exports = {
         }, window.$data);
     },
 
-    created() {
-        this.Translations = this.$resource('api/languagemanager/translation{/id}');
-        this.$watch('config.page', this.load, {immediate: true});
-    },
-
     computed: {
         languagesOptions: function () {
-
-            const options = [];
-            _.forEach(this.languages, locale => {
-                options.push({value: locale.language, text: locale.language});
-            });
-            return [{label: this.$trans('Filter by'), options: options}];
+            const options = Object.values(this.languages)
+                .map(locale => ({value: locale.language, text: locale.language,}));
+            return [{label: this.$trans('Filter by'), options,},];
         },
 
         typesOptions: function () {
-
-            const options = [];
-            _.forEach(this.types, type => {
-                options.push({value: type.name, text: type.label});
-            });
-            return [{label: this.$trans('Filter by'), options: options}];
+            const options = Object.values(this.types)
+                .map(type => ({value: type.name, text: type.label,}));
+            return [{label: this.$trans('Filter by'), options,},];
         },
 
+    },
+
+    watch: {
+        'config.filter': {
+            handler(filter) {
+                if (this.config.page) {
+                    this.config.page = 0;
+                } else {
+                    this.load();
+                }
+                this.$session.set('bixie.languagemanager.translations.admin.filter', filter);
+            },
+            deep: true,
+        },
+    },
+
+    created() {
+        this.Translations = this.$resource('api/languagemanager/translation{/id}');
+        this.$watch('config.page', this.load, {immediate: true,});
     },
 
     methods: {
@@ -74,7 +84,7 @@ module.exports = {
         },
 
         removeTranslations() {
-            this.Translations.delete({id: 'bulk'}, {ids: this.selected}).then(() => {
+            this.Translations.delete({id: 'bulk',}, {ids: this.selected,}).then(() => {
                 this.load();
                 this.$notify('Translations removed.');
             });
@@ -86,24 +96,7 @@ module.exports = {
 
     },
 
-    watch: {
-
-        'config.filter': {
-            handler(filter) {
-                if (this.config.page) {
-                    this.config.page = 0;
-                } else {
-                    this.load();
-                }
-                this.$session.set('bixie.languagemanager.translations.admin.filter', filter);
-            },
-            deep: true
-        }
-
-    },
-
-
 };
 
-Vue.ready(module.exports);
+Vue.ready(vm);
 

@@ -1,31 +1,35 @@
+/*global Vue */
+import fields from '../../settings/fields';
 
-module.exports = {
+import LocalesSettings from '../../components/locales-settings.vue';
+import FlagSelect from '../../components/flag-select.vue';
 
-    name: 'languagemanager-settings',
+// @vue/component
+const vm = {
 
     el: '#languagemanager-settings',
 
-    fields: require('../../settings/fields'),
+    name: 'LanguagemanagerSettings',
 
     components: {
-       'locales-settings': require('../../components/locales-settings.vue'),
-        'flag-select': require('../../components/flag-select.vue'),
+        'locales-settings': LocalesSettings,
+        'flag-select': FlagSelect,
     },
 
-    data() {
-        return _.merge({
-            languages: {},
-            flags: [],
-            site_locale_id: '',
-            config: {
-                default_locale: {
-                    flag: '',
-                },
-                locales: [],
+    fields,
+
+    data: () => _.merge({
+        languages: {},
+        flags: [],
+        site_locale_id: '',
+        config: {
+            default_locale: {
+                flag: '',
             },
-            form: {},
-        }, window.$data);
-    },
+            locales: [],
+        },
+        form: {},
+    }, window.$data),
 
     computed: {
         default_locale_label() {
@@ -45,12 +49,12 @@ module.exports = {
 
     methods: {
         save() {
-            this.$http.post('admin/languagemanager/config', {config: this.config}).then(() => {
+            this.$http.post('admin/languagemanager/config', {config: this.config,}).then(() => {
                 this.$notify('Settings saved.');
             }, res => this.$notify((res.data.message || res.data), 'danger'));
         },
-    }
+    },
 
 };
 
-Vue.ready(module.exports);
+Vue.ready(vm);

@@ -1,5 +1,4 @@
 
-module.exports = {
-    settings: {
-    }
+export default  {
+    settings: {},
 };

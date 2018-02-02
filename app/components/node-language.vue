@@ -27,9 +27,9 @@
                     </div>
 
                     <!--<div class="uk-form-row">-->
-                        <!--<label class="uk-form-label">{{ 'Slug' | trans }}</label>-->
-                        <!--<input class="uk-width-1-1" type="text"-->
-                               <!--v-model="translations[locale.language].data.slug">-->
+                    <!--<label class="uk-form-label">{{ 'Slug' | trans }}</label>-->
+                    <!--<input class="uk-width-1-1" type="text"-->
+                    <!--v-model="translations[locale.language].data.slug">-->
                     <!--</div>-->
 
                 </li>
@@ -42,44 +42,48 @@
 </template>
 
 <script>
-    import TranslationMixin from '../mixins/translation-mixin';
-    import FlagSource from '../mixins/flag-source';
+/*global _ */
+import PageLanguage from './page-language.vue';
 
-    const vm = {
+import TranslationMixin from '../mixins/translation-mixin';
+import FlagSource from '../mixins/flag-source';
 
-        section: {
-            label: 'Translation',
-            priority: 110
-        },
+const vm = {
 
-        props: ['node', 'form',],
+    name: 'NodeLanguage',
 
-        mixins: [TranslationMixin, FlagSource,],
+    section: {
+        label: 'Translation',
+        priority: 110,
+    },
 
-        data: () => _.merge({
-            translations: {},
-            languages: {},
-            types: {},
-            default_language: '',
-            model: '',
-            model_id: 0,
-            type: 'core.node',
-        }, window.$languageManager),
+    props: ['node', 'form',],
 
-        created() {
-            this.model = this.types[this.type].model;
-            this.model_id = this.node.id;
-            this.setup();
-            //set id for new items
-            if (!this.node.id) {
-                this.$watch('node.id', id => this.setNewId(id));
-            }
-        },
+    mixins: [TranslationMixin, FlagSource,],
 
-    };
+    data: () => _.merge({
+        translations: {},
+        languages: {},
+        types: {},
+        default_language: '',
+        model: '',
+        model_id: 0,
+        type: 'core.node',
+    }, window.$languageManager),
 
-    window.Site.components['page:language'] = require('./page-language.vue');
-    window.Site.components['language'] = vm;
-    export default vm;
+    created() {
+        this.model = this.types[this.type].model;
+        this.model_id = this.node.id;
+        this.setup();
+        //set id for new items
+        if (!this.node.id) {
+            this.$watch('node.id', id => this.setNewId(id));
+        }
+    },
+
+};
+
+window.Site.components['page:language'] = PageLanguage;
+window.Site.components.language = vm;
 
 </script>

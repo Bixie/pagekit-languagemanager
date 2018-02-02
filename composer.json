@@ -2,7 +2,7 @@
     "name": "bixie/languagemanager",
     "module": "bixie/languagemanager",
     "type": "pagekit-extension",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "title": "Bixie Languagemanager",
     "description": "Language manager for Pagekit",
     "license": "MIT",

@@ -1,4 +1,4 @@
-    <template>
+<template>
 
     <div>
 
@@ -25,92 +25,95 @@
 
 </template>
 <script>
+/*global _, UIkit */
+import FlagSelect from './flag-select.vue';
+import LocaleSet from './locale-set.vue';
 
-    const default_locale = () => ({
-        isNew: true,
-        locale_id: '',
-        language: '',
-        region: '',
-        flag: '',
-        site: {
-            title: '',
-            meta: {
-                description: '',
-                image: '',
-            },
-            view: {
-                logo: ''
-            },
+const default_locale = () => ({
+    isNew: true,
+    locale_id: '',
+    language: '',
+    region: '',
+    flag: '',
+    site: {
+        title: '',
+        meta: {
+            description: '',
+            image: '',
         },
-    });
-
-    export default {
-
-        name: 'locales-settings',
-
-        props: {
-            'value': Array,
-            'languages': Object,
-            'flags': Array,
-            'site_locale_id': String,
+        view: {
+            logo: '',
         },
+    },
+});
 
-        components: {
-            'flag-select': require('./flag-select.vue'),
-            'locale-set': require('./locale-set.vue'),
-        },
+export default {
 
-        data() {
-            return {
-                new_locale:{},
+    name: 'LocalesSettings',
+
+    components: {
+        'flag-select': FlagSelect,
+        'locale-set': LocaleSet,
+    },
+
+    props: {
+        'value': Array,
+        'languages': Object,
+        'flags': Array,
+        'site_locale_id': String,
+    },
+
+    data() {
+        return {
+            new_locale: {},
+        }
+    },
+
+    created() {
+        this.new_locale = _.defaultsDeep({}, default_locale());
+    },
+
+    ready() {
+        UIkit.nestable(this.$els.localesNestable, {
+            maxDepth: 1,
+            handleClass: 'uk-nestable-handle',
+            group: 'lm.locales',
+        }).on('change.uk.nestable', (e, nestable, el, type) => {
+            if (type && type !== 'removed') {
+                const locales = [];
+                _.forEach(nestable.list(), option => {
+                    locales.push(_.find(this.value, 'locale_id', `${option.locale_id}`));
+                });
+                this.value = locales;
+                this.$emit('save');
             }
-        },
+        });
+    },
 
-        created() {
+    methods: {
+        add() {
+            if (!this.new_locale.locale_id) {
+                return;
+            }
+            if (this.new_locale.locale_id === this.site_locale_id) {
+                this.$notify('Cannot add the deafult language as extra language');
+                return;
+            }
+            const parts = this.new_locale.locale_id.split('_');
+            this.new_locale.language = parts[0].toLowerCase();
+            this.new_locale.region = (parts[1] || '').toLowerCase();
+
+            this.value.push(this.new_locale);
             this.new_locale = _.defaultsDeep({}, default_locale());
+            this.$emit('save');
         },
-
-        ready() {
-            UIkit.nestable(this.$els.localesNestable, {
-                maxDepth: 1,
-                handleClass: 'uk-nestable-handle',
-                group: 'lm.locales'
-            }).on('change.uk.nestable', (e, nestable, el, type) => {
-                if (type && type !== 'removed') {
-                    const locales = [];
-                    _.forEach(nestable.list(), option => {
-                        locales.push(_.find(this.value, 'locale_id', `${option.locale_id}`));
-                    });
-                    this.value = locales;
-                    this.$emit('save');
-                }
-            });
+        remove(index) {
+            this.value.splice(index, 1);
+            this.$emit('save');
         },
+    },
 
-        methods: {
-            add() {
-                if (!this.new_locale.locale_id) {
-                    return;
-                }
-                if (this.new_locale.locale_id === this.site_locale_id) {
-                    this.$notify('Cannot add the deafult language as extra language');
-                    return;
-                }
-                const parts = this.new_locale.locale_id.split('_');
-                this.new_locale.language = parts[0].toLowerCase();
-                this.new_locale.region = (parts[1] || '').toLowerCase();
-
-                this.value.push(this.new_locale);
-                this.new_locale = _.defaultsDeep({}, default_locale());
-                this.$emit('save');
-            },
-            remove(index) {
-                this.value.splice(index, 1);
-                this.$emit('save');
-            },
-        },
-
-    };
+};
 
 
 </script>
