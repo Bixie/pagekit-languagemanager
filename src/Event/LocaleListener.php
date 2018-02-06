@@ -26,7 +26,9 @@ class LocaleListener implements EventSubscriberInterface {
     public function onRequest ($event, $request) {
         if (App::isAdmin() || !$event->isMasterRequest()
             || strpos($request->getPathInfo(), '/system/intl') === 0
-            || ($request->isXmlHttpRequest() && !$request->attributes->get('_translate'))) {
+            || ($request->isXmlHttpRequest() && !$request->attributes->get('_translate'))
+            //UIkit uploader does not send the { 'X-Requested-With': 'XMLHttpRequest' } header by default
+            || ($request->get('files') || $request->get('file'))) {
             return;
         }
 
