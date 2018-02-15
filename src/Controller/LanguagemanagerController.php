@@ -55,6 +55,7 @@ class LanguagemanagerController {
 
     /**
      * @Access ("system: access settings", admin=true)
+     * @Route("/config", methods="POST")
      * @Request ({"config": "array"}, csrf=true)
      * @param array $config
      * @return array
