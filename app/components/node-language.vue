@@ -85,5 +85,6 @@ const vm = {
 
 window.Site.components['page:language'] = PageLanguage;
 window.Site.components.language = vm;
-
+//needs to be exported to compile template
+export default vm;
 </script>
