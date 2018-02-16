@@ -32,8 +32,9 @@ class LocaleListener implements EventSubscriberInterface {
             return;
         }
 
-        // try to see if the locale has been set as a _locale routing parameter
-        if (!$language = $request->attributes->get('_locale')) {
+        // try to see if the locale has been set as a _locale request parameter
+        if (!$language = $request->get('_locale')
+            or !preg_match('/^('.$this->languagemanager->getRequirementsRegex().')$/', $language)) {
             // if no explicit locale has been set on this request, use the session value or the default
             $language = App::session()->get('_locale', $this->languagemanager->default_language);
         }
