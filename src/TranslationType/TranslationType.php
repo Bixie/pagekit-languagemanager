@@ -61,8 +61,12 @@ class TranslationType implements \JsonSerializable {
 	 * @return string
 	 */
 	public function getEventModel () {
-		return $this->event_model ?: strtolower(basename($this->model));
-	}
+        if ($this->event_model) {
+            return $this->event_model;
+        }
+        $parts = explode('\\', $this->model);
+        return strtolower(end($parts));
+    }
 
 	/**
 	 * @param array $data
