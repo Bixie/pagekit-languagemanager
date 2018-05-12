@@ -222,9 +222,12 @@ class LanguagemanagerModule extends Module {
 
     /**
      * @param string $language
+     * @param bool   $persist
      */
-    public function setLanguage ($language) {
-        App::session()->set('_locale', $language);
+    public function setLanguage ($language, $persist = true) {
+        if ($persist) {
+            App::session()->set('_locale', $language);
+        }
         $this->current_language = $language;
     }
 

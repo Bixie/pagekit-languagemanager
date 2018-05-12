@@ -41,7 +41,7 @@ class LocaleListener implements EventSubscriberInterface {
 
         //set language in request/modules
         $request->setLocale($language);
-        $this->languagemanager->setLanguage($language);
+        $this->languagemanager->setLanguage($language, $request->get('_locale_persist', true));
         App::module('system/intl')->setLocale($this->languagemanager->getLocaleId());
     }
 
