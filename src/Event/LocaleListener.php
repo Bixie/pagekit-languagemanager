@@ -46,6 +46,24 @@ class LocaleListener implements EventSubscriberInterface {
     }
 
     /**
+     * Set admin language per user.
+     * XHR requests from admin are not localized by default in Pagekit, they get the site language
+     * This is called in a separate listener because the User Provider is nog available in the main listener.
+     * @param $event
+     * @param $request
+     */
+    public function adminLanguage ($event, $request) {
+        //set locale for admin if set in user object
+        if (App::isAdmin() && $event->isMasterRequest()) {
+            $admin_locale_id = App::config('system')->get('admin.locale');
+            if ($user_locale_id = App::user()->get('admin_locale_id', '') and $user_locale_id != $admin_locale_id) {
+                App::module('system/intl')->setLocale($user_locale_id);
+            }
+            return;
+        }
+    }
+
+    /**
      * @param $event
      * @param View $view
      */
@@ -87,7 +105,11 @@ class LocaleListener implements EventSubscriberInterface {
         return [
             //site intl event (system/index.php) has prio 150
             //lower than 100 where request params are added
-            'request' => ['onRequest', 95],
+            'request' => [
+                ['onRequest', 95],
+                //lower than 50 where userprovider is set
+                ['adminLanguage', 45],
+            ],
             //system title is set at 10
             'view.init' => ['onViewInit', -40],
             //theme meta is set at -30, system title is set at -50

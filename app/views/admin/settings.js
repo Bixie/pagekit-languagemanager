@@ -20,6 +20,10 @@ const vm = {
 
     data: () => _.merge({
         languages: {},
+        admin_language: {
+            user: {},
+            locale_id: '',
+        },
         flags: [],
         site_locale_id: '',
         config: {
@@ -49,9 +53,10 @@ const vm = {
 
     methods: {
         save() {
-            this.$http.post('admin/languagemanager/config', {config: this.config,}).then(() => {
-                this.$notify('Settings saved.');
-            }, res => this.$notify((res.data.message || res.data), 'danger'));
+            this.$http.post('admin/languagemanager/config', {config: this.config, admin_language: this.admin_language,})
+                .then(() => {
+                    this.$notify('Settings saved.');
+                }, res => this.$notify((res.data.message || res.data), 'danger'));
         },
     },
 

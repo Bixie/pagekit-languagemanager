@@ -1,4 +1,3 @@
-
 <?php
 $view->script('languagemanager-settings', 'bixie/languagemanager:app/bundle/languagemanager-settings.js', ['bixie-pkframework', 'uikit-nestable'],
     ['version' => $app->module('bixie/pk-framework')->getVersionKey($app->package('bixie/languagemanager')->get('version'))]);
@@ -44,10 +43,12 @@ $view->script('languagemanager-settings', 'bixie/languagemanager:app/bundle/lang
                                     <span>{{ default_locale_label }}</span>
                                 </div>
                                 <div class="uk-width-1-2">
-                                    <flag-select class="uk-width-1-1" :value.sync="config.default_locale.flag" :flags="flags"></flag-select>
+                                    <flag-select class="uk-width-1-1" :value.sync="config.default_locale.flag"
+                                                 :flags="flags"></flag-select>
                                 </div>
                             </div>
-                            <p class="uk-form-help-block">{{ 'Set the default language in Pagekit System settings.' | trans }}</p>
+                            <p class="uk-form-help-block">{{ 'Set the default language in Pagekit System settings.' |
+                                trans }}</p>
                         </div>
                     </div>
 
@@ -77,6 +78,20 @@ $view->script('languagemanager-settings', 'bixie/languagemanager:app/bundle/lang
 
                         </div>
                     </div>
+
+                    <div class="uk-form-row uk-form-horizontal">
+                        <label class="uk-form-label">{{ 'Personal admin language' | trans }}</label>
+                        <div class="uk-form-controls">
+                            <select v-model="admin_language.admin_locale_id" class="uk-width-1-1">
+                                <option value="">{{ 'Default' | trans }}</option>
+                                <option v-for="language in languages" :value="$key">{{ language }}</option>
+                            </select>
+
+                            <p>{{ 'This will only set the admin language for your own user (%user%)' | trans
+                                {user: admin_language.user.name} }}</p>
+                        </div>
+                    </div>
+
 
                     <bixie-fields :config="$options.fields.settings" :values.sync="config"></bixie-fields>
 

@@ -38,6 +38,7 @@ class LanguagemanagerController {
         $flag_path = '/packages/bixie/languagemanager/assets/flags';
 
         $flags = array_map('basename', glob(App::locator()->get($flag_path) . '/*.png'));
+        $user = App::user();
 
         return [
             '$view' => [
@@ -46,6 +47,10 @@ class LanguagemanagerController {
             ],
             '$data' => [
                 'flags' => $flags,
+                'admin_language' => [
+                    'user' => $user,
+                    'admin_locale_id' => $user->get('admin_locale_id', ''),
+                ],
                 'site_locale_id' => App::config('system')->get('site.locale'),
                 'languages' => App::module('system/intl')->getAvailableLanguages(),
                 'config' => App::module('bixie/languagemanager')->config()
@@ -56,13 +61,19 @@ class LanguagemanagerController {
     /**
      * @Access ("system: access settings", admin=true)
      * @Route("/config", methods="POST")
-     * @Request ({"config": "array"}, csrf=true)
+     * @Request ({"config": "array", "admin_language": "array"}, csrf=true)
      * @param array $config
+     * @param array $admin_language
      * @return array
      */
-    public function configAction ($config = []) {
+    public function configAction ($config = [], $admin_language = []) {
         App::config('bixie/languagemanager')->merge($config, true)->set('locales', $config['locales']);
-
+        $user = App::user();
+        if (isset($admin_language['user'], $admin_language['user']['id'], $admin_language['admin_locale_id']) and
+            $admin_language['user']['id'] == $user->id and $user->get('admin_locale_id', '') != $admin_language['admin_locale_id']) {
+            $user->set('admin_locale_id', $admin_language['admin_locale_id']);
+            $user->save();
+        }
         //flush cache to generate new routes
         App::cache()->flushAll();
         return ['message' => 'success'];
