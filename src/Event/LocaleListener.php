@@ -71,7 +71,9 @@ class LocaleListener implements EventSubscriberInterface {
         if (App::isAdmin()) {
             return;
         }
-        $view->params->set('title', $this->languagemanager->getLocaleSiteConfig('title'));
+        if ($title = $this->languagemanager->getLocaleSiteConfig('title')) {
+            $view->params->set('title', $title);
+        }
     }
 
     /**
