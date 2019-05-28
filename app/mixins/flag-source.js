@@ -4,7 +4,7 @@ const FLAG_PATH = '/packages/bixie/languagemanager/assets/flags';
 export default {
 
     data: () => ({
-        languages: {},
+        languages: window.$data.languages || {},
     }),
 
     methods: {
